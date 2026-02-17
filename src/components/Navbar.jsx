@@ -4,6 +4,10 @@ import { useAuth } from "../context/AuthContext";
 import { Button } from "./ui/Button";
 import { Moon, Sun, LogOut, PlusCircle, LayoutDashboard, UserCircle, Users, PieChart, Split, Bell } from "lucide-react";
 import NotificationDropdown from "./NotificationDropdown";
+import { BarChart3 } from "lucide-react";
+
+import logoBlack from "../assets/Paisawaisafavblack.png";
+import logoWhite from "../assets/Paisawaisafavblackwhite.png";
 
 export default function Navbar() {
     const { theme, toggleTheme } = useTheme();
@@ -16,10 +20,11 @@ export default function Navbar() {
         <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
             <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary">
-                    <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground">
-                        P
-                    </div>
-                    <span className="hidden sm:inline-block">PaisaWaisa</span>
+                    <img
+                        src={theme === "dark" ? logoWhite : logoBlack}
+                        alt="PaisaWaisa Logo"
+                        className="h-8 w-auto object-contain"
+                    />
                 </Link>
 
                 {currentUser && (
@@ -74,6 +79,7 @@ export default function Navbar() {
                                 <span className="hidden lg:inline">Insights</span>
                             </Button>
                         </Link>
+
                         <Link to="/profile">
                             <Button
                                 variant={isActive("/profile") ? "primary" : "ghost"}

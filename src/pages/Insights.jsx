@@ -6,6 +6,7 @@ import { Card } from "../components/ui/Card";
 import HeatmapCalendar from "../components/HeatmapCalendar";
 import { TrendingUp, TrendingDown, DollarSign, PieChart as PieIcon } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend, BarChart, Bar, XAxis, YAxis } from "recharts";
+import { getDateObject } from "../lib/utils";
 
 export default function Insights() {
     const { currentUser } = useAuth();
@@ -44,7 +45,7 @@ export default function Insights() {
     const monthlyData = transactions
         .filter(t => t.type === "expense")
         .reduce((acc, t) => {
-            const date = t.date?.toDate();
+            const date = getDateObject(t.date);
             if (date) {
                 const month = date.toLocaleString('default', { month: 'short' });
                 acc[month] = (acc[month] || 0) + t.amount;
@@ -105,38 +106,42 @@ export default function Insights() {
                     <h3 className="font-semibold mb-4 text-lg flex items-center gap-2">
                         <PieIcon className="h-4 w-4" /> Expense Breakdown
                     </h3>
-                    <ResponsiveContainer width="100%" height={250}>
-                        <PieChart>
-                            <Pie
-                                data={pieData}
-                                cx="50%"
-                                cy="50%"
-                                innerRadius={60}
-                                outerRadius={80}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="value"
-                            >
-                                {pieData.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                                ))}
-                            </Pie>
-                            <Tooltip formatter={(value) => `₹${value}`} />
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
+                    <div className="h-[250px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart>
+                                <Pie
+                                    data={pieData}
+                                    cx="50%"
+                                    cy="50%"
+                                    innerRadius={60}
+                                    outerRadius={80}
+                                    fill="#8884d8"
+                                    paddingAngle={5}
+                                    dataKey="value"
+                                >
+                                    {pieData.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                                    ))}
+                                </Pie>
+                                <Tooltip formatter={(value) => `₹${value}`} />
+                                <Legend />
+                            </PieChart>
+                        </ResponsiveContainer>
+                    </div>
                 </Card>
 
                 <Card className="p-6 min-h-[300px]">
                     <h3 className="font-semibold mb-4 text-lg">Monthly Trends</h3>
-                    <ResponsiveContainer width="100%" height={250}>
-                        <BarChart data={barData}>
-                            <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
-                            <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value}`} />
-                            <Tooltip formatter={(value) => `₹${value}`} cursor={{ fill: 'transparent' }} />
-                            <Bar dataKey="amount" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                        </BarChart>
-                    </ResponsiveContainer>
+                    <div className="h-[250px] w-full">
+                        <ResponsiveContainer width="100%" height="100%">
+                            <BarChart data={barData}>
+                                <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
+                                <YAxis stroke="#888888" fontSize={12} tickLine={false} axisLine={false} tickFormatter={(value) => `₹${value}`} />
+                                <Tooltip formatter={(value) => `₹${value}`} cursor={{ fill: 'transparent' }} />
+                                <Bar dataKey="amount" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
                 </Card>
             </div>
         </div>

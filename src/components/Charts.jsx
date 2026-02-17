@@ -4,7 +4,6 @@ import { Card } from "./ui/Card";
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884d8", "#82ca9d"];
 
 export default function Charts({ transactions }) {
-    // Process data for Pie Chart (Expense by Category)
     const expenseTransactions = transactions.filter(t => t.type === 'expense');
     const categoryData = expenseTransactions.reduce((acc, curr) => {
         if (acc[curr.category]) {
@@ -20,7 +19,6 @@ export default function Charts({ transactions }) {
         value: categoryData[category]
     }));
 
-    // Process data for Bar Chart (Income vs Expense)
     const income = transactions.filter(t => t.type === 'income').reduce((acc, curr) => acc + curr.amount, 0);
     const expense = transactions.filter(t => t.type === 'expense').reduce((acc, curr) => acc + curr.amount, 0);
 

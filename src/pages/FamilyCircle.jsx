@@ -9,6 +9,7 @@ import { Card } from "../components/ui/Card";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Users, Plus, UserPlus, LogOut, Trash2, Shield, CreditCard } from "lucide-react";
+import { getDateObject } from "../lib/utils";
 
 export default function FamilyCircle() {
     const { currentUser } = useAuth();
@@ -54,6 +55,11 @@ export default function FamilyCircle() {
         const unsubscribe = onSnapshot(q, (snapshot) => {
             const docs = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
             setExpenses(docs);
+        }, (error) => {
+            console.error("Error fetching family expenses:", error);
+            if (error.code === 'failed-precondition') {
+                alert("Firestore requires an index for this query. Check the console for the link to create it.");
+            }
         });
 
         return unsubscribe;
@@ -131,6 +137,7 @@ export default function FamilyCircle() {
             setExpenseAmount("");
         } catch (error) {
             console.error("Error adding expense:", error);
+            alert("Failed to add expense. Check console for details.");
         }
     };
 
@@ -251,7 +258,7 @@ export default function FamilyCircle() {
                                     <div>
                                         <p className="font-medium">{expense.title}</p>
                                         <p className="text-xs text-muted-foreground">
-                                            Added by {expense.addedByName} • {new Date(expense.date?.toDate()).toLocaleDateString()}
+                                            Added by {expense.addedByName} • {getDateObject(expense.date)?.toLocaleDateString() || 'N/A'}
                                         </p>
                                     </div>
                                 </div>

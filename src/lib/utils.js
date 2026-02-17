@@ -21,3 +21,12 @@ export const formatDate = (dateString) => {
         day: 'numeric'
     }).format(date);
 }
+
+export const getDateObject = (dateValue) => {
+    if (!dateValue) return null;
+    if (dateValue.toDate && typeof dateValue.toDate === 'function') {
+        return dateValue.toDate();
+    }
+    const d = new Date(dateValue);
+    return isNaN(d.getTime()) ? null : d;
+};

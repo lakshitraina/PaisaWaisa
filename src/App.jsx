@@ -14,6 +14,7 @@ import SplitExpense from "./pages/SplitExpense";
 import Insights from "./pages/Insights";
 
 
+
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
   if (!currentUser) {

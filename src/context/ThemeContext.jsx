@@ -8,7 +8,6 @@ export function useTheme() {
 
 export function ThemeProvider({ children }) {
     const [theme, setTheme] = useState(() => {
-        // Check local storage or system preference
         if (typeof window !== "undefined" && window.localStorage) {
             const storedTheme = window.localStorage.getItem("theme");
             if (storedTheme) {

@@ -4,6 +4,7 @@ import { Plus } from "lucide-react";
 import { db } from "../lib/firebase";
 import { useAuth } from "../context/AuthContext";
 import SummaryCards from "../components/SummaryCards";
+import FunnyQuoteCard from "../components/FunnyQuoteCard";
 import TransactionList from "../components/TransactionList";
 import TransactionForm from "../components/TransactionForm";
 import Charts from "../components/Charts";
@@ -105,6 +106,9 @@ export default function Dashboard() {
         <div className="container mx-auto p-4 space-y-6 pb-20">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                 <h1 className="text-3xl font-bold">Dashboard</h1>
+
+                <FunnyQuoteCard />
+
                 <Button onClick={() => { setEditingTransaction(null); setShowModal(true); }}>
                     <Plus className="mr-2 h-4 w-4" /> Add Transaction
                 </Button>
