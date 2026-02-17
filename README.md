@@ -3,25 +3,43 @@
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
+![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 
-PaisaWaisa is a modern, clean, and intuitive Personal Finance Tracker capable of tracking your income and expenses in real-time. Built with React.js and powered by Firebase, it offers a seamless experience with data visualization and secure authentication.
+**Live Demo:** [https://paisawaisaa.netlify.app/](https://paisawaisaa.netlify.app/)
+
+PaisaWaisa is a unified personal finance platform designed to make tracking money simple, social, and insightful. Beyond just logging expenses, it allows you to manage shared household finances, split bills with friends, and visualize your financial health with advanced analytics.
 
 ## ✨ Features
 
--   **📊 Dashboard**: Get a quick overview of your total balance, income, and expenses.
--   **📈 Visual Analytics**: Interactive charts to visualize your spending patterns by category.
--   **🔐 Secure Authentication**: Sign up and login securely using Firebase Authentication.
+### 的核心 Core Banking & Tracking
+-   **📊 Interactive Dashboard**: Real-time overview of your total balance, income, and expenses.
+-   **💬 Funny Financial Quotes**: Rotating Hinglish quotes to keep finance fun.
 -   **📝 Transaction Management**: Easily add, edit, and delete transactions.
--   **🔍 Smart Filtering**: Filter transactions by type (Income/Expense) and category.
--   **🌓 Dark/Light Mode**: Toggle between themes for a comfortable viewing experience.
--   **📱 Responsive Design**: Fully optimized for desktop, tablet, and mobile devices.
+-   **🔍 Smart Filtering**: Sort transactions by type (Income/Expense) and category.
+
+### 👥 Social Finance (New!)
+-   **🏠 Family Circle**: Invite family members to a shared space. Track household spending together in real-time.
+-   **💸 Split Expenses**: Split bills with friends or family. Track who paid what and settle debts easily.
+-   **🔔 Real-time Notifications**: Get alerted when someone adds a family expense or requests a split.
+
+### 📈 Reports & Insights
+-   **📅 GitHub-Style Heatmap**: Visualize your spending intensity over the year.
+-   **🍩 Category Breakdown**: Interactive Pie charts to see where your money goes.
+-   **📊 Monthly Trends**: Bar charts to compare spending month-over-month.
+-   **💰 Net Worth & Savings Rate**: Auto-calculated financial health metrics.
+
+### 🎨 User Experience
+-   **🌓 Dark/Light Mode**: Fully theme-aware UI.
+-   **📱 Responsive Design**: Works perfectly on mobile, tablet, and desktop.
+-   **🔐 Secure Authentication**: Powered by Firebase (Email/Password + Google).
 
 ## 🛠️ Tech Stack
 
 -   **Frontend**: React (Vite), TailwindCSS
--   **Backend (BaaS)**: Firebase (Auth, Firestore)
+-   **Backend**: Firebase (Auth, Firestore)
 -   **Charts**: Recharts
 -   **Icons**: Lucide React
+-   **Deployment**: Netlify
 
 ## 🚀 Getting Started
 
@@ -61,18 +79,6 @@ Follow these steps to get a local copy up and running.
     ```bash
     npm run dev
     ```
-
-## 📂 Project Structure
-
-```
-src/
-├── components/       # Reusable UI components
-├── context/          # React Context (Auth, Theme)
-├── lib/              # Utility functions and Firebase config
-├── pages/            # Application pages (Dashboard, Login, etc.)
-├── App.jsx           # Main application entry
-└── main.jsx          # DOM rendering
-```
 
 ## 🤝 Contributing
 

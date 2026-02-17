@@ -18,7 +18,7 @@ export default function Navbar() {
 
     return (
         <nav className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="container mx-auto flex h-16 items-center justify-between px-4">
+            <div className="container mx-auto flex h-16 items-center justify-between px-4 relative">
                 <Link to="/" className="flex items-center gap-2 font-bold text-xl text-primary">
                     <img
                         src={theme === "dark" ? logoWhite : logoBlack}
@@ -28,7 +28,7 @@ export default function Navbar() {
                 </Link>
 
                 {currentUser && (
-                    <div className="flex items-center gap-1 sm:gap-4 bg-muted/50 p-1 rounded-full border">
+                    <div className="flex items-center gap-1 sm:gap-4 bg-muted/50 p-1 rounded-full border md:absolute md:left-1/2 md:-translate-x-1/2">
                         <Link to="/">
                             <Button
                                 variant={isActive("/") ? "primary" : "ghost"}
