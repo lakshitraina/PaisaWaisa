@@ -4,8 +4,11 @@ import { useAuth } from "../context/AuthContext";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Card } from "../components/ui/Card";
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 export default function Signup() {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,7 +27,14 @@ export default function Signup() {
         try {
             setError("");
             setLoading(true);
-            await signup(email, password);
+            const { user } = await signup(email, password);
+            const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            await setDoc(doc(db, "users", user.uid), {
+                name,
+                email,
+                inviteCode,
+                createdAt: new Date()
+            });
             navigate("/");
         } catch (err) {
             setError("Failed to create an account. " + err.message);
@@ -37,7 +47,19 @@ export default function Signup() {
         try {
             setError("");
             setLoading(true);
-            await googleSignIn();
+            const { user } = await googleSignIn();
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (!userDoc.exists()) {
+                const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+                await setDoc(userDocRef, {
+                    name: user.displayName,
+                    email: user.email,
+                    inviteCode,
+                    createdAt: new Date()
+                });
+            }
             navigate("/");
         } catch (error) {
             setError("Failed to sign in with Google. " + error.message);
@@ -56,6 +78,17 @@ export default function Signup() {
                 {error && <div className="p-3 text-sm text-red-500 bg-red-100 rounded-md dark:bg-red-900/30">{error}</div>}
 
                 <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="space-y-2">
+                        <label htmlFor="name" className="text-sm font-medium">Name</label>
+                        <Input
+                            id="name"
+                            type="text"
+                            placeholder="John Doe"
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            required
+                        />
+                    </div>
                     <div className="space-y-2">
                         <label htmlFor="email" className="text-sm font-medium">Email</label>
                         <Input

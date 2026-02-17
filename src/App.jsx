@@ -5,13 +5,13 @@ import Navbar from "./components/Navbar";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 
-// Placeholder pages (Dashboard, AddTransaction, Profile will be replaced later)
-
 import AddTransaction from "./pages/AddTransaction";
 import Profile from "./pages/Profile";
 
-// Placeholder pages (Dashboard logic already imported, but defining for clarity where it comes from conceptually if not directly imported yet. Ah, I haven't imported Dashboard in App.jsx yet either!)
 import Dashboard from "./pages/Dashboard";
+import FamilyCircle from "./pages/FamilyCircle";
+import SplitExpense from "./pages/SplitExpense";
+import Insights from "./pages/Insights";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -32,6 +32,9 @@ function App() {
             <main>
               <Routes>
                 <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/family" element={<ProtectedRoute><FamilyCircle /></ProtectedRoute>} />
+                <Route path="/split" element={<ProtectedRoute><SplitExpense /></ProtectedRoute>} />
+                <Route path="/insights" element={<ProtectedRoute><Insights /></ProtectedRoute>} />
                 <Route path="/add-transaction" element={<ProtectedRoute><AddTransaction /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/login" element={<Login />} />

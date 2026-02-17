@@ -4,6 +4,8 @@ import { useAuth } from "../context/AuthContext";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
 import { Card } from "../components/ui/Card";
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -32,7 +34,19 @@ export default function Login() {
         try {
             setError("");
             setLoading(true);
-            await googleSignIn();
+            const { user } = await googleSignIn();
+            const userDocRef = doc(db, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (!userDoc.exists()) {
+                const inviteCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+                await setDoc(userDocRef, {
+                    name: user.displayName,
+                    email: user.email,
+                    inviteCode,
+                    createdAt: new Date()
+                });
+            }
             navigate("/");
         } catch (error) {
             setError("Failed to sign in with Google. " + error.message);

@@ -29,7 +29,7 @@ export default function Dashboard() {
         );
 
         const unsubscribe = onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
-            console.log("Snapshot update:", snapshot.docs.length, "docs", "Metadata:", snapshot.metadata);
+
             const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
             setTransactions(docs);
             setLoading(false);

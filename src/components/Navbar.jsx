@@ -2,7 +2,8 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "./ui/Button";
-import { Moon, Sun, User, LogOut, PlusCircle, LayoutDashboard, UserCircle } from "lucide-react";
+import { Moon, Sun, LogOut, PlusCircle, LayoutDashboard, UserCircle, Users, PieChart, Split, Bell } from "lucide-react";
+import NotificationDropdown from "./NotificationDropdown";
 
 export default function Navbar() {
     const { theme, toggleTheme } = useTheme();
@@ -43,6 +44,36 @@ export default function Navbar() {
                                 <span className="hidden sm:inline">Add</span>
                             </Button>
                         </Link>
+                        <Link to="/family">
+                            <Button
+                                variant={isActive("/family") ? "primary" : "ghost"}
+                                size="sm"
+                                className="rounded-full gap-2"
+                            >
+                                <Users className="h-4 w-4" />
+                                <span className="hidden lg:inline">Family</span>
+                            </Button>
+                        </Link>
+                        <Link to="/split">
+                            <Button
+                                variant={isActive("/split") ? "primary" : "ghost"}
+                                size="sm"
+                                className="rounded-full gap-2"
+                            >
+                                <Split className="h-4 w-4" />
+                                <span className="hidden lg:inline">Split</span>
+                            </Button>
+                        </Link>
+                        <Link to="/insights">
+                            <Button
+                                variant={isActive("/insights") ? "primary" : "ghost"}
+                                size="sm"
+                                className="rounded-full gap-2"
+                            >
+                                <PieChart className="h-4 w-4" />
+                                <span className="hidden lg:inline">Insights</span>
+                            </Button>
+                        </Link>
                         <Link to="/profile">
                             <Button
                                 variant={isActive("/profile") ? "primary" : "ghost"}
@@ -57,6 +88,7 @@ export default function Navbar() {
                 )}
 
                 <div className="flex items-center gap-2">
+                    {currentUser && <NotificationDropdown />}
                     <Button
                         variant="ghost"
                         size="icon"
