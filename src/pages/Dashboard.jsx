@@ -28,9 +28,16 @@ export default function Dashboard() {
             orderBy("date", "desc")
         );
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
+        const unsubscribe = onSnapshot(q, { includeMetadataChanges: true }, (snapshot) => {
+            console.log("Snapshot update:", snapshot.docs.length, "docs", "Metadata:", snapshot.metadata);
             const docs = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
             setTransactions(docs);
+            setLoading(false);
+        }, (error) => {
+            console.error("Error fetching transactions: ", error);
+            if (error.code === 'failed-precondition') {
+                alert("Firestore requires an index for this query. Check the console for the link to create it.");
+            }
             setLoading(false);
         });
 
