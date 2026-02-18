@@ -10,7 +10,7 @@ PaisaWaisa is a unified personal finance platform designed to make tracking mone
 
 ## ✨ Features
 
-### 的核心 Core Banking & Tracking
+### Core Banking & Tracking
 -   **📊 Interactive Dashboard**: Real-time overview of your total balance, income, and expenses.
 -   **💬 Funny Financial Quotes**: Rotating Hinglish quotes to keep finance fun.
 -   **📝 Transaction Management**: Easily add, edit, and delete transactions.
