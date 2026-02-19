@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/Navbar";
@@ -16,7 +16,6 @@ import Loans from "./pages/Loans";
 import CreditHealth from "./pages/CreditHealth";
 
 
-
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
   if (!currentUser) {
@@ -25,15 +24,27 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
+// Layout component to include Navbar on authenticated/public pages that need it
+const MainLayout = () => {
+  return (
+    <>
+      <Navbar />
+      <main>
+        <Outlet />
+      </main>
+    </>
+  );
+};
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <ThemeProvider>
           <div className="min-h-screen bg-background text-foreground font-sans antialiased transition-colors duration-300">
-            <Navbar />
-            <main>
-              <Routes>
+            <Routes>
+              {/* Routes with Navbar */}
+              <Route element={<MainLayout />}>
                 <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
                 <Route path="/family" element={<ProtectedRoute><FamilyCircle /></ProtectedRoute>} />
                 <Route path="/split" element={<ProtectedRoute><SplitExpense /></ProtectedRoute>} />
@@ -42,10 +53,12 @@ function App() {
                 <Route path="/loans" element={<ProtectedRoute><Loans /></ProtectedRoute>} />
                 <Route path="/credit-health" element={<ProtectedRoute><CreditHealth /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-              </Routes>
-            </main>
+              </Route>
+
+              {/* Routes without Navbar */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </Routes>
           </div>
         </ThemeProvider>
       </AuthProvider>
