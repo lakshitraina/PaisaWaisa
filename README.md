@@ -1,17 +1,16 @@
 # PaisaWaisa - Personal Finance Tracker 💰
 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=netlify)](https://paisawaisaa.netlify.app)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 ![Firebase](https://img.shields.io/badge/Firebase-039BE5?style=for-the-badge&logo=Firebase&logoColor=white)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
 
-**Live Demo:** [https://paisawaisaa.netlify.app/](https://paisawaisaa.netlify.app/)
-
 PaisaWaisa is a unified personal finance platform designed to make tracking money simple, social, and insightful. Beyond just logging expenses, it allows you to manage shared household finances, split bills with friends, and visualize your financial health with advanced analytics.
 
 ## ✨ Features
 
-### 的核心 Core Banking & Tracking
+### Core Banking & Tracking
 -   **📊 Interactive Dashboard**: Real-time overview of your total balance, income, and expenses.
 -   **💬 Funny Financial Quotes**: Rotating Hinglish quotes to keep finance fun.
 -   **📝 Transaction Management**: Easily add, edit, and delete transactions.
