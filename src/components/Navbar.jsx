@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 import { Button } from "./ui/Button";
-import { Moon, Sun, LogOut, PlusCircle, LayoutDashboard, UserCircle, Users, PieChart, Split, Bell, Menu, X } from "lucide-react";
+import { Moon, Sun, LogOut, PlusCircle, LayoutDashboard, UserCircle, Users, PieChart, Split, Bell, Menu, X, IndianRupee, ShieldCheck } from "lucide-react";
 import NotificationDropdown from "./NotificationDropdown";
 import { BarChart3 } from "lucide-react";
 
@@ -70,6 +70,18 @@ export default function Navbar() {
                                 <span>Split</span>
                             </Button>
                         </Link>
+                        <Link to="/loans">
+                            <Button variant={isActive("/loans") ? "primary" : "ghost"} size="sm" className="rounded-full gap-2">
+                                <IndianRupee className="h-4 w-4" />
+                                <span>Loans</span>
+                            </Button>
+                        </Link>
+                        <Link to="/credit-health">
+                            <Button variant={isActive("/credit-health") ? "primary" : "ghost"} size="sm" className="rounded-full gap-2">
+                                <ShieldCheck className="h-4 w-4" />
+                                <span>Credit</span>
+                            </Button>
+                        </Link>
                         <Link to="/insights">
                             <Button variant={isActive("/insights") ? "primary" : "ghost"} size="sm" className="rounded-full gap-2">
                                 <PieChart className="h-4 w-4" />
@@ -128,6 +140,16 @@ export default function Navbar() {
                     <Link to="/split" onClick={() => setIsMenuOpen(false)}>
                         <Button variant={isActive("/split") ? "primary" : "ghost"} className="w-full justify-start gap-2">
                             <Split className="h-4 w-4" /> Split Expenses
+                        </Button>
+                    </Link>
+                    <Link to="/loans" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant={isActive("/loans") ? "primary" : "ghost"} className="w-full justify-start gap-2">
+                            <IndianRupee className="h-4 w-4" /> Loans
+                        </Button>
+                    </Link>
+                    <Link to="/credit-health" onClick={() => setIsMenuOpen(false)}>
+                        <Button variant={isActive("/credit-health") ? "primary" : "ghost"} className="w-full justify-start gap-2">
+                            <ShieldCheck className="h-4 w-4" /> Credit Health
                         </Button>
                     </Link>
                     <Link to="/insights" onClick={() => setIsMenuOpen(false)}>

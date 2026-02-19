@@ -11,26 +11,72 @@ import { getDateObject } from "../lib/utils";
 export default function Insights() {
     const { currentUser } = useAuth();
     const [transactions, setTransactions] = useState([]);
+    const [loans, setLoans] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!currentUser) return;
-        const q = query(
+
+        // Fetch Transactions
+        const qTransactions = query(
             collection(db, "transactions"),
             where("userId", "==", currentUser.uid),
             orderBy("date", "desc")
         );
 
-        const unsubscribe = onSnapshot(q, (snapshot) => {
+        const unsubscribeTransactions = onSnapshot(qTransactions, (snapshot) => {
             setTransactions(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
             setLoading(false);
         });
-        return unsubscribe;
+
+        // Fetch Loans
+        const qLoans = query(
+            collection(db, "loans"),
+            where("userId", "==", currentUser.uid),
+            where("status", "==", "active")
+        );
+
+        const unsubscribeLoans = onSnapshot(qLoans, (snapshot) => {
+            setLoans(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        });
+
+        return () => {
+            unsubscribeTransactions();
+            unsubscribeLoans();
+        };
     }, [currentUser]);
 
+    // Transaction Metrics
     const income = transactions.filter(t => t.type === "income").reduce((acc, t) => acc + t.amount, 0);
     const expense = transactions.filter(t => t.type === "expense").reduce((acc, t) => acc + t.amount, 0);
     const savingsRate = income > 0 ? ((income - expense) / income) * 100 : 0;
+
+    // Monthly Income Calculation for DTI
+    const monthlyIncomeData = transactions
+        .filter(t => t.type === "income")
+        .reduce((acc, t) => {
+            const date = getDateObject(t.date);
+            if (date) {
+                const month = date.toLocaleString('default', { month: 'short', year: '2-digit' });
+                acc[month] = (acc[month] || 0) + t.amount;
+            }
+            return acc;
+        }, {});
+
+    const incomeMonths = Object.keys(monthlyIncomeData).length || 1;
+    const avgMonthlyIncome = income / (incomeMonths || 1);
+
+    // Loan Metrics
+    const totalLoanAmount = loans.reduce((acc, loan) => acc + loan.totalAmount, 0);
+    const totalRemainingDebt = loans.reduce((acc, loan) => acc + loan.remainingAmount, 0);
+    const totalPaidDebt = totalLoanAmount - totalRemainingDebt;
+    const totalMonthlyEmi = loans.reduce((acc, loan) => acc + loan.emiAmount, 0);
+
+    // Debt-to-Income Ratio
+    const dtiRatio = avgMonthlyIncome > 0 ? (totalMonthlyEmi / avgMonthlyIncome) * 100 : 0;
+
+    // Projected Debt Free Time
+    const monthsToDebtFree = totalMonthlyEmi > 0 ? Math.ceil(totalRemainingDebt / totalMonthlyEmi) : 0;
 
     const categoryData = transactions
         .filter(t => t.type === "expense")
@@ -64,6 +110,7 @@ export default function Insights() {
                 Financial Insights
             </h1>
 
+            {/* General Financial Health */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card className="p-6 flex flex-col items-center justify-center text-center">
                     <h3 className="text-muted-foreground font-medium mb-2">Savings Rate</h3>
@@ -86,15 +133,67 @@ export default function Insights() {
                 </Card>
 
                 <Card className="p-6 flex flex-col items-center justify-center text-center">
-                    <h3 className="text-muted-foreground font-medium mb-2">Total Net Worth</h3>
-                    <div className="text-4xl font-bold text-primary">
-                        ₹{(income - expense).toFixed(2)}
+                    <h3 className="text-muted-foreground font-medium mb-2">Net Worth (Cash Flow)</h3>
+                    <div className={`text-4xl font-bold ${income - expense >= 0 ? "text-green-600" : "text-red-500"}`}>
+                        ₹{(income - expense).toLocaleString()}
                     </div>
                     <p className="text-xs text-muted-foreground mt-2">
-                        Income - Expenses
+                        Total Income - Total Expenses
                     </p>
                 </Card>
             </div>
+
+            {/* Loan Insights Section */}
+            {loans.length > 0 && (
+                <div className="space-y-4">
+                    <h2 className="text-xl font-bold flex items-center gap-2">
+                        <DollarSign className="h-6 w-6 text-primary" /> Debt Insights
+                    </h2>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <Card className="p-5">
+                            <h3 className="text-sm text-muted-foreground mb-1">Total Active Debt</h3>
+                            <div className="text-2xl font-bold text-destructive">₹{totalRemainingDebt.toLocaleString()}</div>
+                            <div className="w-full bg-secondary h-1.5 mt-2 rounded-full overflow-hidden">
+                                <div
+                                    className="bg-green-500 h-full"
+                                    style={{ width: `${(totalPaidDebt / totalLoanAmount) * 100}%` }}
+                                ></div>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                {((totalPaidDebt / totalLoanAmount) * 100).toFixed(0)}% Paid Off
+                            </p>
+                        </Card>
+
+                        <Card className="p-5">
+                            <h3 className="text-sm text-muted-foreground mb-1">Monthly EMI Burden</h3>
+                            <div className="text-2xl font-bold">₹{totalMonthlyEmi.toLocaleString()}</div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Fixed monthly outflow
+                            </p>
+                        </Card>
+
+                        <Card className="p-5">
+                            <h3 className="text-sm text-muted-foreground mb-1">Debt-to-Income (DTI)</h3>
+                            <div className={`text-2xl font-bold ${dtiRatio > 40 ? "text-red-500" : dtiRatio > 20 ? "text-yellow-500" : "text-green-500"}`}>
+                                {dtiRatio.toFixed(1)}%
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                {dtiRatio > 40 ? "High Risk > 40%" : "Healthy Range < 30%"}
+                            </p>
+                        </Card>
+
+                        <Card className="p-5">
+                            <h3 className="text-sm text-muted-foreground mb-1">Debt Free In</h3>
+                            <div className="text-2xl font-bold flex items-end gap-1">
+                                {monthsToDebtFree} <span className="text-sm font-normal text-muted-foreground mb-1">Months</span>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1">
+                                Est. {new Date(new Date().setMonth(new Date().getMonth() + monthsToDebtFree)).toLocaleString('default', { month: 'short', year: 'numeric' })}
+                            </p>
+                        </Card>
+                    </div>
+                </div>
+            )}
 
             <Card className="p-6">
                 <h3 className="font-semibold mb-4 text-lg">Spending Intensity (Last 365 Days)</h3>

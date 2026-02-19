@@ -12,6 +12,8 @@ import Dashboard from "./pages/Dashboard";
 import FamilyCircle from "./pages/FamilyCircle";
 import SplitExpense from "./pages/SplitExpense";
 import Insights from "./pages/Insights";
+import Loans from "./pages/Loans";
+import CreditHealth from "./pages/CreditHealth";
 
 
 
@@ -37,6 +39,8 @@ function App() {
                 <Route path="/split" element={<ProtectedRoute><SplitExpense /></ProtectedRoute>} />
                 <Route path="/insights" element={<ProtectedRoute><Insights /></ProtectedRoute>} />
                 <Route path="/add-transaction" element={<ProtectedRoute><AddTransaction /></ProtectedRoute>} />
+                <Route path="/loans" element={<ProtectedRoute><Loans /></ProtectedRoute>} />
+                <Route path="/credit-health" element={<ProtectedRoute><CreditHealth /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<Signup />} />

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { collection, query, where, onSnapshot, addDoc, deleteDoc, doc, updateDoc, orderBy } from "firebase/firestore";
+import { collection, query, where, onSnapshot, addDoc, deleteDoc, doc, updateDoc, orderBy, getDoc } from "firebase/firestore";
 import { Plus } from "lucide-react";
 import { db } from "../lib/firebase";
 import { useAuth } from "../context/AuthContext";
@@ -46,6 +46,9 @@ export default function Dashboard() {
     }, [currentUser]);
 
     const handleAddTransaction = async (data) => {
+        // Optimistic UI: Close immediately
+        setShowModal(false);
+        setEditingTransaction(null);
         try {
             if (editingTransaction) {
                 await updateDoc(doc(db, "transactions", editingTransaction.id), {
@@ -59,13 +62,12 @@ export default function Dashboard() {
                     createdAt: new Date(),
                 });
             }
-            setShowModal(false);
-            setEditingTransaction(null);
         } catch (error) {
             console.error("Error adding/updating transaction: ", error);
             alert("Error saving transaction");
         }
     };
+
 
     const handleDeleteTransaction = async (id) => {
         if (!window.confirm("Are you sure you want to delete this transaction?")) return;
@@ -102,6 +104,36 @@ export default function Dashboard() {
 
     const balance = income - expense;
 
+    const [activeLoansCount, setActiveLoansCount] = useState(0);
+    const [totalEmiDue, setTotalEmiDue] = useState(0);
+    const [creditScore, setCreditScore] = useState(0);
+
+    // Fetch Loans and Credit Score
+    useEffect(() => {
+        if (!currentUser) return;
+
+        // Active Loans & EMI
+        const loansQuery = query(collection(db, "loans"), where("userId", "==", currentUser.uid), where("status", "==", "active"));
+        const unsubscribeLoans = onSnapshot(loansQuery, (snapshot) => {
+            setActiveLoansCount(snapshot.size);
+            const totalEmi = snapshot.docs.reduce((acc, doc) => acc + (doc.data().emiAmount || 0), 0);
+            setTotalEmiDue(totalEmi);
+        });
+
+        // Current Credit Score
+        const userRef = doc(db, "users", currentUser.uid);
+        const unsubscribeUser = onSnapshot(userRef, (doc) => {
+            if (doc.exists() && doc.data().creditScore) {
+                setCreditScore(doc.data().creditScore);
+            }
+        });
+
+        return () => {
+            unsubscribeLoans();
+            unsubscribeUser();
+        };
+    }, [currentUser]);
+
     return (
         <div className="container mx-auto p-4 space-y-6 pb-20">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -114,7 +146,14 @@ export default function Dashboard() {
                 </Button>
             </div>
 
-            <SummaryCards income={income} expense={expense} balance={balance} />
+            <SummaryCards
+                income={income}
+                expense={expense}
+                balance={balance}
+                activeLoansCount={activeLoansCount}
+                totalEmiDue={totalEmiDue}
+                creditScore={creditScore}
+            />
 
             <Charts transactions={transactions} />
 
