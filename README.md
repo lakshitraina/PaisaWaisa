@@ -27,10 +27,16 @@ PaisaWaisa is a unified personal finance platform designed to make tracking mone
 -   **📊 Monthly Trends**: Bar charts to compare spending month-over-month.
 -   **💰 Net Worth & Savings Rate**: Auto-calculated financial health metrics.
 
+### 🔐 Authentication & Security (Redesigned!)
+-   **🐒 Interactive Login**: A fun, animated monkey that reacts to your input (covers eyes on password focus!).
+-   **📱 Mobile Optimized**: The animation intelligently hides on smaller screens for a clutter-free experience.
+-   **🇬 Professional Google Sign-In**: Seamless one-click login with the official Google interface.
+-   **🛡️ Secure & Private**: Your data is protected with industry-standard Firebase security rules.
+
 ### 🎨 User Experience
 -   **🌓 Dark/Light Mode**: Fully theme-aware UI.
 -   **📱 Responsive Design**: Works perfectly on mobile, tablet, and desktop.
--   **🔐 Secure Authentication**: Powered by Firebase (Email/Password + Google).
+-   **✨ Split-Screen Layout**: Modern, clean interface for login and signup pages.
 
 ## 🛠️ Tech Stack
 
