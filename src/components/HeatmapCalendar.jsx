@@ -58,18 +58,21 @@ export default function HeatmapCalendar({ transactions }) {
 
     return (
         <div className="w-full">
-            <div className="flex w-full gap-[2px]">
-                {weeks.map((week, weekIndex) => (
-                    <div key={weekIndex} className="flex-1 flex flex-col gap-[2px] min-w-[8px]">
-                        {week.map((day, dayIndex) => (
-                            <div
-                                key={day.date}
-                                className={`w-full aspect-square rounded-[1px] md:rounded-sm ${day.inRange ? getColor(day.val) : 'bg-transparent'}`}
-                                title={day.inRange ? `${day.date}: ₹${day.val.toFixed(2)}` : ''}
-                            />
-                        ))}
-                    </div>
-                ))}
+            <div className="overflow-x-auto pb-4 -mx-6 px-6 md:mx-0 md:px-0"> {/* Scroll container with negative margins for full edge-to-edge effect on mobile if desired, or just simple scroll */}
+                {/* Let's keep it simple and contained within the card padding for now, but ensure it scrolls */}
+                <div className="min-w-[600px] flex gap-[2px]">
+                    {weeks.map((week, weekIndex) => (
+                        <div key={weekIndex} className="flex-1 flex flex-col gap-[2px] min-w-[8px]">
+                            {week.map((day, dayIndex) => (
+                                <div
+                                    key={day.date}
+                                    className={`w-full aspect-square rounded-[1px] md:rounded-sm ${day.inRange ? getColor(day.val) : 'bg-transparent'}`}
+                                    title={day.inRange ? `${day.date}: ₹${day.val.toFixed(2)}` : ''}
+                                />
+                            ))}
+                        </div>
+                    ))}
+                </div>
             </div>
             <div className="flex items-center gap-2 text-xs text-muted-foreground mt-4 justify-end">
                 <span>Less</span>
