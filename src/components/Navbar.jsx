@@ -98,6 +98,26 @@ export default function Navbar() {
                 )}
 
                 <div className="flex items-center gap-2">
+                    {currentUser && (
+                        <Link to="/profile" className="hidden md:flex items-center gap-2 mr-2 hover:bg-muted/50 p-1.5 rounded-full transition-colors">
+                            {currentUser.photoURL ? (
+                                <img
+                                    src={currentUser.photoURL}
+                                    alt={currentUser.displayName || "User"}
+                                    className="h-8 w-8 rounded-full object-cover border ring-2 ring-background"
+                                />
+                            ) : (
+                                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary border ring-2 ring-background">
+                                    <UserCircle className="h-5 w-5" />
+                                </div>
+                            )}
+                            <div className="flex flex-col items-start leading-none">
+                                <span className="text-sm font-semibold max-w-[120px] truncate">
+                                    {currentUser.displayName || "User"}
+                                </span>
+                            </div>
+                        </Link>
+                    )}
                     {currentUser && <NotificationDropdown />}
                     <Button variant="ghost" size="icon" onClick={toggleTheme} className="rounded-full">
                         {theme === "dark" ? <Sun className="h-5 w-5 text-yellow-500" /> : <Moon className="h-5 w-5 text-slate-700" />}

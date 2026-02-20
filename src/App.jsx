@@ -15,6 +15,11 @@ import Insights from "./pages/Insights";
 import Loans from "./pages/Loans";
 import CreditHealth from "./pages/CreditHealth";
 
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import TermsOfService from "./pages/legal/TermsOfService";
+import CookiePolicy from "./pages/legal/CookiePolicy";
+import Disclaimer from "./pages/legal/Disclaimer";
+
 
 const ProtectedRoute = ({ children }) => {
   const { currentUser } = useAuth();
@@ -24,17 +29,7 @@ const ProtectedRoute = ({ children }) => {
   return children;
 };
 
-// Layout component to include Navbar on authenticated/public pages that need it
-const MainLayout = () => {
-  return (
-    <>
-      <Navbar />
-      <main>
-        <Outlet />
-      </main>
-    </>
-  );
-};
+import MainLayout from "./components/MainLayout";
 
 function App() {
   return (
@@ -53,6 +48,12 @@ function App() {
                 <Route path="/loans" element={<ProtectedRoute><Loans /></ProtectedRoute>} />
                 <Route path="/credit-health" element={<ProtectedRoute><CreditHealth /></ProtectedRoute>} />
                 <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+
+                {/* Legal Pages (Public) */}
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/cookies" element={<CookiePolicy />} />
+                <Route path="/disclaimer" element={<Disclaimer />} />
               </Route>
 
               {/* Routes without Navbar */}
