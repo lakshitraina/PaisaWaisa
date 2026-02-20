@@ -30,7 +30,7 @@ PaisaWaisa is a unified personal finance platform designed to make tracking mone
 ### 🔐 Authentication & Security (Redesigned!)
 -   **🐒 Interactive Login**: A fun, animated monkey that reacts to your input (covers eyes on password focus!).
 -   **📱 Mobile Optimized**: The animation intelligently hides on smaller screens for a clutter-free experience.
--   **🇬 Professional Google Sign-In**: Seamless one-click login with the official Google interface.
+-   **G Professional Google Sign-In**: Seamless one-click login with the official Google interface.
 -   **🛡️ Secure & Private**: Your data is protected with industry-standard Firebase security rules.
 
 ### 🎨 User Experience
