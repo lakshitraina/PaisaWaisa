@@ -1,4 +1,4 @@
-# PaisaWaisa - Personal Finance Tracker 💰
+# PaisaWaisa - Personal Finance Tracker 
 
 [![Live Demo](https://img.shields.io/badge/Live-Demo-brightgreen?style=for-the-badge&logo=netlify)](https://paisawaisaa.netlify.app)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
