@@ -101,4 +101,4 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-> Built with ❤️ by Lakshit Raina in India.
+> Built with Love ❤️ by Lakshit Raina in India.
